@@ -10,10 +10,20 @@ const (
 )
 
 type AFQService struct {
+	core.QuotationService
 	core.DefaultQuotationService
+	COMPANY string
+	PREFIX  string
 }
 
-func (afq *AFQService) GenerateQuotation(info core.ClientInfo) core.Quotation {
+func NewAFQService() AFQService {
+	return AFQService{
+		COMPANY: company,
+		PREFIX:  prefix,
+	}
+}
+
+func (afq *AFQService) GenerateQuotation(info *core.ClientInfo) *core.Quotation {
 	price := afq.GeneratePrice(600, 600)
 
 	discount := 0.0

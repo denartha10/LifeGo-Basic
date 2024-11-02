@@ -8,10 +8,20 @@ const (
 )
 
 type DGQService struct {
+	core.QuotationService
 	core.DefaultQuotationService
+	COMPANY string
+	PREFIX  string
 }
 
-func (dgq *DGQService) GenerateQuotation(info core.ClientInfo) core.Quotation {
+func NewDGQService() DGQService {
+	return DGQService{
+		COMPANY: company,
+		PREFIX:  prefix,
+	}
+}
+
+func (dgq *DGQService) GenerateQuotation(info *core.ClientInfo) *core.Quotation {
 	price := dgq.GeneratePrice(800, 200)
 	discount := dgq.bmiDiscount(info)
 	if info.Smoker {
@@ -21,7 +31,7 @@ func (dgq *DGQService) GenerateQuotation(info core.ClientInfo) core.Quotation {
 	return core.NewQuotation(company, dgq.GenerateReference(prefix), (price * (100 - float64(discount)) / 100))
 }
 
-func (dgq *DGQService) bmiDiscount(info core.ClientInfo) int64 {
+func (dgq *DGQService) bmiDiscount(info *core.ClientInfo) int64 {
 	bmi := dgq.Bmi(info.Weight, info.Height)
 	switch {
 	case bmi < 18.5:

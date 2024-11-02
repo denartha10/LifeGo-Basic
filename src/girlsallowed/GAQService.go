@@ -8,12 +8,20 @@ const (
 )
 
 type GAQService struct {
+	core.QuotationService
 	core.DefaultQuotationService
 	PREFIX  string
 	COMPANY string
 }
 
-func (g *GAQService) GenerateQuotation(info core.ClientInfo) core.Quotation {
+func NewGAQService() GAQService {
+	return GAQService{
+		COMPANY: company,
+		PREFIX:  prefix,
+	}
+}
+
+func (g *GAQService) GenerateQuotation(info *core.ClientInfo) *core.Quotation {
 	// create an initial quotation between 600 and 1000
 	price := g.GeneratePrice(600, 400)
 
@@ -38,7 +46,7 @@ func (g *GAQService) GenerateQuotation(info core.ClientInfo) core.Quotation {
 	)
 }
 
-func (g *GAQService) bmiDiscount(info core.ClientInfo) int64 {
+func (g *GAQService) bmiDiscount(info *core.ClientInfo) int64 {
 	bmi := g.Bmi(info.Weight, info.Height)
 	switch {
 	case bmi < 18.5:
@@ -54,7 +62,7 @@ func (g *GAQService) bmiDiscount(info core.ClientInfo) int64 {
 	}
 }
 
-func (g *GAQService) medicalWeighting(info core.ClientInfo) int64 {
+func (g *GAQService) medicalWeighting(info *core.ClientInfo) int64 {
 	var weighting int64 = 0
 	if info.MedicalIssues {
 		weighting -= 20

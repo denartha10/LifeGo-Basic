@@ -7,7 +7,7 @@ import (
 
 type QuotationService interface {
 	Service
-	GenerateQuotation(c ClientInfo) Quotation
+	GenerateQuotation(c *ClientInfo) *Quotation
 }
 
 // type to store the Quotations returnes by Quotation services
@@ -17,8 +17,8 @@ type Quotation struct {
 	Price     float64
 }
 
-func NewQuotation(company, reference string, price float64) Quotation {
-	return Quotation{
+func NewQuotation(company, reference string, price float64) *Quotation {
+	return &Quotation{
 		Company:   company,
 		Reference: reference,
 		Price:     price,
@@ -29,7 +29,6 @@ func NewQuotation(company, reference string, price float64) Quotation {
 // We don't have inheritance in go so this will be passes as a composition
 type DefaultQuotationService struct {
 	counter int64
-	random  rand.Rand
 }
 
 func (qs *DefaultQuotationService) GenerateReference(prefix string) string {
@@ -46,7 +45,7 @@ func (qs *DefaultQuotationService) GenerateReference(prefix string) string {
 }
 
 func (qs *DefaultQuotationService) GeneratePrice(m float64, r int64) float64 {
-	return m + float64(r)*qs.random.Float64()
+	return m + float64(r)*rand.Float64()
 }
 
 func (qs *DefaultQuotationService) Bmi(weight float64, height float64) float64 {

@@ -1,7 +1,6 @@
 package core
 
-type Service interface {
-}
+type Service interface{}
 
 // ServiceRegistry holds the services in a map.
 var services = make(map[string]Service)

@@ -18,8 +18,8 @@ type ClientInfo struct {
 	MedicalIssues bool
 }
 
-func NewClient(n string, g gender, a int8, h, w float64, s, m bool) ClientInfo {
-	return ClientInfo{
+func NewClient(n string, g gender, a int8, h, w float64, s, m bool) *ClientInfo {
+	return &ClientInfo{
 		Name:          n,
 		Gender:        g,
 		Age:           a,
